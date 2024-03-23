@@ -69,7 +69,7 @@ spec:
             - mountPath: /models
               name: {{ include "stable-diffusion.fullname" . }}-model-store
           {{- with .Values.runtimeClassName }}
-             runtimeClassName: {{ .Values.runtimeClassName }}
+             runtimeClassName: {{ . }}
           {{- end }}
           # Todo - Implement an efficient readiness and liveness check
           resources:
