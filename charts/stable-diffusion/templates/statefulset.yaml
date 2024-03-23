@@ -45,10 +45,10 @@ spec:
           args:
             - -c
             - >-
-                wget -nc {{ .Values.models.sd14 }} -O /models/model.ckpt;
-                wget -nc {{ .Values.models.gfpGan13 }} -P /models;
-                wget -nc {{ .Values.models.realEsrGanx4p10 }} -P /models;
-                wget -nc {{ .Values.models.realEsrGanx4Animep02 }} -P /models
+                [ ! -f /models/model.ckpt ] && wget -nc {{ .Values.models.sd14 }} -O /models/model.ckpt;
+                [ ! -f /models/GFPGANv1.3.pth] && wget -nc {{ .Values.models.gfpGan13 }} -P /models;
+                [ ! -f /models/RealESRGAN_x4plus.pth ]] && wget -nc {{ .Values.models.realEsrGanx4p10 }} -P /models;
+                [ ! -f /models/RealESRGAN_x4plus_anime_6B.pth ]] && wget -nc {{ .Values.models.realEsrGanx4Animep02 }} -P /models
           volumeMounts:
             - mountPath: /models
               name: {{ include "stable-diffusion.fullname" . }}-model-store
@@ -69,6 +69,9 @@ spec:
             - mountPath: /models
               name: {{ include "stable-diffusion.fullname" . }}-model-store
           # Todo - Implement an efficient readiness and liveness check
+          {{- with .Values.runtimeClassName }}
+             runtimeClassName: {{ .Values.runtimeClassName }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
