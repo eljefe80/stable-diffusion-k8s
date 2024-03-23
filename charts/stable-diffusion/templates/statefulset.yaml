@@ -68,10 +68,10 @@ spec:
           volumeMounts:
             - mountPath: /models
               name: {{ include "stable-diffusion.fullname" . }}-model-store
-          # Todo - Implement an efficient readiness and liveness check
           {{- with .Values.runtimeClassName }}
              runtimeClassName: {{ .Values.runtimeClassName }}
           {{- end }}
+          # Todo - Implement an efficient readiness and liveness check
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
